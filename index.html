@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agent Orchestrator Roadmap</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111c34;
+      --panel-2: #17233d;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --blue: #38bdf8;
+      --green: #34d399;
+      --purple: #a78bfa;
+      --orange: #fb923c;
+      --red: #f87171;
+      --border: rgba(148, 163, 184, 0.22);
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 34rem),
+        radial-gradient(circle at top right, rgba(167, 139, 250, 0.16), transparent 32rem),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+
+    .hero {
+      padding: 48px;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(17, 28, 52, 0.92), rgba(23, 35, 61, 0.72));
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      color: var(--blue);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 7vw, 5.6rem);
+      line-height: 0.95;
+      letter-spacing: -0.07em;
+      margin: 0 0 22px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 830px;
+      font-size: 1.18rem;
+      margin: 0;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .pill {
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.55);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 0.92rem;
+    }
+
+    section { margin-top: 48px; }
+
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      margin: 0;
+    }
+
+    .section-note {
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      grid-column: span 4;
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(17, 28, 52, 0.74);
+    }
+
+    .card.wide { grid-column: span 6; }
+    .card.full { grid-column: 1 / -1; }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .card p, .card li { color: var(--muted); }
+    .card ul { margin: 12px 0 0; padding-left: 20px; }
+
+    .tag {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .blue { background: rgba(56, 189, 248, 0.14); color: var(--blue); }
+    .green { background: rgba(52, 211, 153, 0.14); color: var(--green); }
+    .purple { background: rgba(167, 139, 250, 0.14); color: var(--purple); }
+    .orange { background: rgba(251, 146, 60, 0.14); color: var(--orange); }
+    .red { background: rgba(248, 113, 113, 0.14); color: var(--red); }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+    }
+
+    .step {
+      position: relative;
+      min-height: 150px;
+      padding: 20px;
+      border-radius: 20px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+    }
+
+    .step strong {
+      display: block;
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    .step span { color: var(--muted); font-size: 0.94rem; }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 18px;
+    }
+
+    .phase {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 20px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(17, 28, 52, 0.72);
+    }
+
+    .phase-label {
+      font-weight: 800;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.82rem;
+    }
+
+    .phase h3 { margin: 0 0 8px; }
+    .phase p { color: var(--muted); margin: 0 0 12px; }
+
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .feature-list li {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.56);
+      color: var(--text);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+    }
+
+    .north-star {
+      padding: 36px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.16), rgba(167, 139, 250, 0.16));
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .north-star h2 { margin-bottom: 14px; }
+    .north-star p {
+      max-width: 850px;
+      margin: 0 auto;
+      color: var(--text);
+      font-size: 1.2rem;
+    }
+
+    @media (max-width: 880px) {
+      .hero { padding: 32px; }
+      .card, .card.wide { grid-column: 1 / -1; }
+      .workflow { grid-template-columns: 1fr; }
+      .phase { grid-template-columns: 1fr; }
+      .feature-list { grid-template-columns: 1fr; }
+      .section-title { align-items: start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="eyebrow">Agent Orchestrator Roadmap</div>
+      <h1>From coding agents to a software production platform.</h1>
+      <p>
+        This roadmap captures the current application concept and the larger future direction: an orchestrator that helps agents understand, plan, test, implement, review, package, and ship useful applications while preserving only the most valuable context.
+      </p>
+      <div class="pill-row">
+        <span class="pill">Human-in-the-loop specification</span>
+        <span class="pill">TDD Ralph loops</span>
+        <span class="pill">Parallel QA supervision</span>
+        <span class="pill">Context-efficient orchestration</span>
+        <span class="pill">Pi agents, skills, and extensions</span>
+      </div>
+    </header>
+
+    <section>
+      <div class="section-title">
+        <h2>Where we are now</h2>
+        <p class="section-note">The current workflow already has a strong backbone for converting a human idea into planned, test-driven implementation work.</p>
+      </div>
+
+      <div class="workflow">
+        <div class="step">
+          <strong>1. Spec Agent + Grill Session</strong>
+          <span>A heavy human-in-the-loop process challenges the user, clarifies the idea, and captures the intent.</span>
+        </div>
+        <div class="step">
+          <strong>2. Plan Agent</strong>
+          <span>Turns the clarified spec into a concrete implementation plan and writes tests first.</span>
+        </div>
+        <div class="step">
+          <strong>3. Kanban Slicing</strong>
+          <span>Breaks the work into deep modules that can be assigned to focused implementation agents.</span>
+        </div>
+        <div class="step">
+          <strong>4. Ralph Loop Implementation</strong>
+          <span>Agents implement their slice using TDD: read tests, write code, run tests, repair, and document.</span>
+        </div>
+        <div class="step">
+          <strong>5. Orchestrated Completion</strong>
+          <span>The orchestrator places documents correctly and ensures agents have the right skills, prompts, and context.</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">
+        <h2>Core philosophy</h2>
+        <p class="section-note">The real product is not just agent execution. It is quality-controlled context management for deep software work.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card wide">
+          <span class="tag blue">Context Quality</span>
+          <h3>Give agents less context, but better context.</h3>
+          <p>Future agents should not rediscover the whole repo. They should receive the smallest useful context package: relevant files, summaries, decisions, tests, constraints, and known risks.</p>
+        </article>
+        <article class="card wide">
+          <span class="tag green">Software Factory</span>
+          <h3>Turn ideas into shippable apps and websites.</h3>
+          <p>The long-term goal is a production system that supports product thinking, implementation, QA, packaging, deployment, and long-term project memory.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">
+        <h2>Future roadmap</h2>
+        <p class="section-note">Large strategic features that expand the system from workflow automation into an agentic development platform.</p>
+      </div>
+
+      <div class="timeline">
+        <article class="phase">
+          <div class="phase-label">Phase 1</div>
+          <div>
+            <h3>Red Team Specification + Acceptance Criteria</h3>
+            <p>Add a Red Team Agent after the Grill Me session to attack assumptions, expose weak requirements, and turn the spec into measurable acceptance criteria.</p>
+            <ul class="feature-list">
+              <li>Challenge ambiguous requirements</li>
+              <li>Identify edge cases and failure modes</li>
+              <li>Extract testable acceptance criteria</li>
+              <li>Flag security, UX, and scalability risks early</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="phase">
+          <div class="phase-label">Phase 2</div>
+          <div>
+            <h3>Parallel QA as a Default Runtime Layer</h3>
+            <p>Make QA agents active supervisors across most workflow stages, not just final reviewers. They should monitor plans, tests, implementation, handoffs, and user-facing quality.</p>
+            <ul class="feature-list">
+              <li>Plan QA against spec criteria</li>
+              <li>Test QA against acceptance criteria</li>
+              <li>Implementation QA during Ralph loops</li>
+              <li>UX, security, performance, and docs QA agents</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="phase">
+          <div class="phase-label">Phase 3</div>
+          <div>
+            <h3>Codeboarding: Interactive Repo Intelligence</h3>
+            <p>Create an interactive map showing how features are implemented across a repo. This becomes the system’s memory layer for future agents.</p>
+            <ul class="feature-list">
+              <li>Feature-to-file maps</li>
+              <li>Architecture and data-flow diagrams</li>
+              <li>Relevant context bundles for agents</li>
+              <li>Repo summaries, decision logs, and implementation paths</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="phase">
+          <div class="phase-label">Phase 4</div>
+          <div>
+            <h3>Agent Spawn Intelligence</h3>
+            <p>Move from a fixed workflow to a dynamic orchestrator that chooses the right constellation of agents based on task type, risk, domain, and required output.</p>
+            <ul class="feature-list">
+              <li>Task classification before execution</li>
+              <li>Automatic agent selection</li>
+              <li>Parallelization and dependency planning</li>
+              <li>Specialist agents for frontend, backend, security, docs, deployment, and packaging</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="phase">
+          <div class="phase-label">Phase 5</div>
+          <div>
+            <h3>Frontend Product Studio</h3>
+            <p>For human-facing apps, add a product and UI ideation system that proposes several distinct directions before implementation begins.</p>
+            <ul class="feature-list">
+              <li>Five unique UI/product concepts</li>
+              <li>User journey and feature-set proposals</li>
+              <li>Design system and accessibility guidance</li>
+              <li>Frontend architecture and component planning</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="phase">
+          <div class="phase-label">Phase 6</div>
+          <div>
+            <h3>Pi Skills and Extensions Layer</h3>
+            <p>Improve the underlying Pi agents through reusable skills and extensions that standardize specialist workflows and automate orchestration mechanics.</p>
+            <ul class="feature-list">
+              <li>Skills: red-team-product, tdd-ralph-loop, codeboarding, frontend-product-studio</li>
+              <li>Extensions: context gatekeeper, artifact router, handoff validator, approval gates</li>
+              <li>Custom commands for orchestration dashboards and workflow control</li>
+              <li>Persistent project memory across sessions</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="phase">
+          <div class="phase-label">Phase 7</div>
+          <div>
+            <h3>Final Assembly Agent</h3>
+            <p>Add a senior-integration layer that turns multiple completed agent slices into a coherent, polished, shippable product.</p>
+            <ul class="feature-list">
+              <li>Cross-module integration review</li>
+              <li>Full test and regression pass</li>
+              <li>Documentation and handoff cleanup</li>
+              <li>Launch checklist and known-issues summary</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="phase">
+          <div class="phase-label">Phase 8</div>
+          <div>
+            <h3>Packaging, Deployment, and Delivery Pipeline</h3>
+            <p>Extend the orchestrator beyond code completion into actual software delivery for apps and websites.</p>
+            <ul class="feature-list">
+              <li>CI/CD setup agents</li>
+              <li>Deployment and rollback agents</li>
+              <li>Release notes and changelog generation</li>
+              <li>Desktop, web, Docker, and hosted-app packaging support</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="phase">
+          <div class="phase-label">Phase 9</div>
+          <div>
+            <h3>Agent Performance Analytics</h3>
+            <p>Track which workflows, agents, skills, and QA patterns produce the best outcomes so the orchestrator improves over time.</p>
+            <ul class="feature-list">
+              <li>Failure-rate tracking by agent and task type</li>
+              <li>Context usage and context waste metrics</li>
+              <li>QA catch-rate analytics</li>
+              <li>Workflow recommendations based on historical success</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">
+        <h2>Strategic feature pillars</h2>
+        <p class="section-note">These pillars describe what the application can become at maturity.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <span class="tag blue">Intelligence</span>
+          <h3>Repo-aware orchestration</h3>
+          <p>Agents understand the codebase through summaries, maps, and feature-level context rather than brute-force file reading.</p>
+        </article>
+        <article class="card">
+          <span class="tag purple">Quality</span>
+          <h3>Always-on QA</h3>
+          <p>QA agents become live collaborators that verify plans, tests, code, UX, docs, and delivery readiness.</p>
+        </article>
+        <article class="card">
+          <span class="tag green">Production</span>
+          <h3>Build and ship</h3>
+          <p>The system supports the full lifecycle: idea, spec, plan, code, review, package, deploy, and maintain.</p>
+        </article>
+        <article class="card">
+          <span class="tag orange">Product</span>
+          <h3>Better human-facing apps</h3>
+          <p>Frontend Product Studio helps the system propose useful, distinctive, accessible product experiences.</p>
+        </article>
+        <article class="card">
+          <span class="tag red">Safety</span>
+          <h3>Human approval gates</h3>
+          <p>High-risk changes such as auth, database migrations, deployment, and destructive operations can require explicit approval.</p>
+        </article>
+        <article class="card">
+          <span class="tag blue">Learning</span>
+          <h3>Workflow analytics</h3>
+          <p>The orchestrator learns which agent structures work best and recommends better future workflows.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="north-star">
+      <h2>North Star</h2>
+      <p>
+        Build an agentic software production platform that lets humans express ideas clearly, lets agents work with focused high-quality context, and reliably turns those ideas into useful, tested, packaged applications and websites.
+      </p>
+    </section>
+  </main>
+</body>
+</html>
