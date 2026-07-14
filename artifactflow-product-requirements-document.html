@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ArtifactFlow — Product Requirements Document</title>
+<style>
+:root{--bg:#f5f7fb;--paper:#fff;--text:#172033;--muted:#5d687a;--line:#dce2eb;--brand:#5b4bdb;--brand2:#1f8a70;--warn:#9a6700;--danger:#b42318;--code:#101827;--soft:#f0efff}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.layout{display:grid;grid-template-columns:300px minmax(0,1fr);max-width:1500px;margin:auto}.sidebar{position:sticky;top:0;height:100vh;overflow:auto;padding:28px 22px;background:#121827;color:#dbe3f3}.sidebar h1{font-size:20px;color:#fff;margin:0 0 4px}.sidebar .version{color:#9eabc2;font-size:13px;margin-bottom:22px}.sidebar a{display:block;color:#bdc9dc;text-decoration:none;padding:5px 8px;border-radius:6px;font-size:13px}.sidebar a:hover{background:#252e42;color:#fff}.main{min-width:0;padding:40px}.paper{max-width:1040px;margin:auto;background:var(--paper);padding:56px 68px;border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 30px rgba(25,37,58,.08)}h1,h2,h3,h4{line-height:1.25;scroll-margin-top:24px}h1{font-size:42px;margin:0 0 12px}h2{font-size:28px;margin:54px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--line)}h3{font-size:21px;margin:32px 0 10px}h4{font-size:17px;margin:24px 0 7px}.lede{font-size:20px;color:var(--muted);max-width:820px}.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0}.meta div{padding:13px 14px;background:#f7f8fc;border:1px solid var(--line);border-radius:8px}.meta strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.callout{padding:16px 18px;border-left:4px solid var(--brand);background:var(--soft);border-radius:5px;margin:20px 0}.callout.warn{border-color:#e2a400;background:#fff7df}.callout.good{border-color:var(--brand2);background:#eaf8f3}.callout.danger{border-color:var(--danger);background:#fff0ee}code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#edf0f5;padding:.12em .34em;border-radius:4px;font-size:.9em}pre{background:var(--code);color:#e7eefc;padding:18px;overflow:auto;border-radius:8px;line-height:1.5}pre code{background:none;padding:0;color:inherit}table{width:100%;border-collapse:collapse;margin:16px 0 26px;font-size:14px}th,td{text-align:left;vertical-align:top;padding:10px 11px;border:1px solid var(--line)}th{background:#f2f4f8}ul,ol{padding-left:24px}.tag{display:inline-block;padding:2px 8px;border-radius:999px;background:#edf0ff;color:#4338a8;font-size:12px;font-weight:700}.gate{border:1px solid var(--line);border-radius:10px;padding:20px 22px;margin:22px 0;background:#fff}.gate h3{margin-top:0}.gate-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.gate-grid>div{background:#f8f9fb;padding:12px 14px;border-radius:7px}.gate-grid h4{margin-top:0}.req{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:#4f46c8}.toolbar{position:fixed;right:22px;bottom:20px;z-index:5}.toolbar button{border:0;border-radius:8px;padding:11px 15px;background:var(--brand);color:#fff;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2)}.small{font-size:13px;color:var(--muted)}@media(max-width:980px){.layout{display:block}.sidebar{position:relative;height:auto}.main{padding:18px}.paper{padding:32px 24px}.meta,.gate-grid{grid-template-columns:1fr 1fr}}@media(max-width:600px){.meta,.gate-grid{grid-template-columns:1fr}h1{font-size:34px}}@media print{body{background:#fff;font-size:11pt}.layout{display:block}.sidebar,.toolbar{display:none}.main{padding:0}.paper{max-width:none;border:0;box-shadow:none;padding:0}h2{break-before:page}h2:first-of-type{break-before:auto}.gate,table,pre{break-inside:avoid}a{color:inherit;text-decoration:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+<h1>ArtifactFlow</h1><div class="version">Product Requirements Document · v0.1</div>
+<nav>
+<a href="#summary">1. Executive summary</a><a href="#problem">2. Problem and opportunity</a><a href="#goals">3. Goals and non-goals</a><a href="#principles">4. Product principles</a><a href="#users">5. Users and use cases</a><a href="#architecture">6. Architecture</a><a href="#domain">7. Domain model</a><a href="#workflow">8. Gates 0–9</a><a href="#artifacts">9. Artifact system</a><a href="#gates">10. Gate engine</a><a href="#routing">11. Routing and invalidation</a><a href="#context">12. Context management</a><a href="#agents">13. Agents and runtimes</a><a href="#git">14. Git and workspaces</a><a href="#execution">15. Deterministic execution</a><a href="#budgets">16. Loops and budgets</a><a href="#persistence">17. Persistence and recovery</a><a href="#api">18. API</a><a href="#ui">19. Operator UI</a><a href="#designer">20. Future designer</a><a href="#security">21. Security</a><a href="#observability">22. Observability</a><a href="#nfr">23. Non-functional requirements</a><a href="#validation">24. Validation strategy</a><a href="#delivery">25. Delivery plan</a><a href="#acceptance">26. MVP acceptance criteria</a><a href="#questions">27. Decisions and open questions</a>
+</nav>
+</aside>
+<main class="main"><article class="paper">
+<header>
+<span class="tag">DRAFT FOR IMPLEMENTATION PLANNING</span>
+<h1>ArtifactFlow</h1>
+<p class="lede">A standalone, artifact-gated control plane for durable multi-agent software-development workflows, optimised for minimal context, high token yield, reproducible evidence, and bounded correction loops.</p>
+<div class="meta"><div><strong>Document</strong>Product Requirements Document</div><div><strong>Version</strong>0.1</div><div><strong>Product type</strong>Standalone control plane</div><div><strong>Initial deployment</strong>Local-first / small team</div></div>
+<div class="callout"><strong>Core rule:</strong> durable, immutable artifacts—not conversation transcripts—are the authoritative workflow state. Stages produce candidate artifacts; independent gates decide whether those artifacts may advance.</div>
+</header>
+
+<section id="summary"><h2>1. Executive summary</h2>
+<p>ArtifactFlow coordinates long-running coding work across specialised agents without carrying an ever-growing conversation through every stage. It decomposes a software-development objective into a durable sequence of specification, slicing, test-contract design, planning, implementation, review, verification, integration, and human acceptance. Each transition is unlocked by explicit evidence.</p>
+<p>The product consists of a framework-neutral workflow engine, an immutable artifact registry, deterministic gate evaluators, an event store, a Git/workspace manager, a sandbox runner, a minimal-context broker, and pluggable runtime adapters. Hermes can be one runtime adapter, but the domain model and execution semantics must not depend on Hermes.</p>
+<p>The first release is deliberately headless-first. A small operator UI will expose runs, artifacts, gates, evidence, retries, and approvals. An Agent Deck-style visual designer for agents, skills, models, prompts, tool policies, context policies, workflow graphs, gates, budgets, and escalation rules follows only after the engine semantics are proven.</p>
+</section>
+
+<section id="problem"><h2>2. Problem and opportunity</h2>
+<h3>2.1 Current problems</h3><ul>
+<li>Long agent conversations accumulate irrelevant reasoning, command output, and stale assumptions, reducing useful context and increasing cost.</li>
+<li>Agents frequently self-report completion without machine-verifiable evidence.</li>
+<li>Plans, patches, reviews, and test results are passed as untyped text and lose provenance.</li>
+<li>Reviewers may inspect workspaces that change while they review, producing race conditions and irreproducible findings.</li>
+<li>Failed tests are commonly routed back to implementation even when the defect is in the plan, test, specification, slice boundary, or environment.</li>
+<li>Retries overwrite prior attempts, hide failure history, and can loop without proving progress.</li>
+<li>Existing agent frameworks are good runtimes but are not necessarily durable workflow control planes.</li>
+</ul>
+<h3>2.2 Opportunity</h3><p>A workflow engine that treats every meaningful handoff as a typed, immutable artifact can reduce context size, improve auditability, support crash recovery, and make multi-agent work measurable. By separating workflow control from agent execution, ArtifactFlow can use Hermes, Claude Code, Codex, OpenCode, local agents, deterministic scripts, and future runtimes behind one contract.</p>
+</section>
+
+<section id="goals"><h2>3. Goals and non-goals</h2>
+<h3>3.1 Goals</h3><ul>
+<li><span class="req">GOAL-001</span> Execute a complete specification-to-release workflow that survives restarts.</li>
+<li><span class="req">GOAL-002</span> Minimise context by handing agents compact stage envelopes plus artifact handles.</li>
+<li><span class="req">GOAL-003</span> Make every transition reproducible from stored state and evidence.</li>
+<li><span class="req">GOAL-004</span> Support specialised profiles, skills, models, prompts, tools, and behavioural policies.</li>
+<li><span class="req">GOAL-005</span> Enforce deterministic validation before semantic LLM review.</li>
+<li><span class="req">GOAL-006</span> Run bounded implementation/review/fix loops with progress detection.</li>
+<li><span class="req">GOAL-007</span> Route failures to the stage responsible for their cause.</li>
+<li><span class="req">GOAL-008</span> Maintain exact requirement-to-release traceability.</li>
+<li><span class="req">GOAL-009</span> Support pluggable runtimes without coupling the engine to a single agent framework.</li>
+<li><span class="req">GOAL-010</span> Measure token yield and workflow effectiveness rather than token count alone.</li>
+</ul>
+<h3>3.2 Non-goals for MVP</h3><ul><li>Multi-tenant SaaS billing and marketplace functionality.</li><li>A production-grade drag-and-drop graph designer.</li><li>Training or fine-tuning foundation models.</li><li>Replacing Git, CI, test frameworks, or agent runtimes.</li><li>Automatically promoting to a protected target branch without human approval.</li><li>Using an LLM to fabricate or infer command/test outcomes.</li></ul>
+</section>
+
+<section id="principles"><h2>4. Product principles</h2><ol>
+<li><strong>Artifacts over transcripts.</strong> Transcripts are optional audit detail, not required state.</li>
+<li><strong>Candidate production is separate from acceptance.</strong> A producer cannot solely approve its own output.</li>
+<li><strong>Deterministic facts are owned by software.</strong> Hashes, exit codes, Git state, files, and test counts come from runners.</li>
+<li><strong>Fresh sessions at semantic boundaries.</strong> Planning, implementation, review, verification, and integration normally use independent sessions.</li>
+<li><strong>Immutable checkpoints.</strong> Reviewers inspect a commit or content-addressed patch that cannot change beneath them.</li>
+<li><strong>Append-only attempts.</strong> A rejected artifact remains; a correction creates a new version.</li>
+<li><strong>Cause-specific routing.</strong> Correction returns to the earliest responsible stage.</li>
+<li><strong>Bounded autonomy.</strong> Every loop has attempt, token, time, cost, and no-progress limits.</li>
+<li><strong>Human authority at consequential boundaries.</strong> Exact specification acceptance and protected-branch promotion require explicit approval.</li>
+<li><strong>Portable core, replaceable runtimes.</strong> Workflow semantics remain framework-neutral.</li>
+</ol></section>
+
+<section id="users"><h2>5. Users and use cases</h2>
+<h3>5.1 Primary users</h3><table><tr><th>User</th><th>Need</th></tr><tr><td>Solo developer / technical founder</td><td>Delegate long coding missions while retaining control, evidence, and predictable cost.</td></tr><tr><td>Engineering lead</td><td>Encode review, testing, security, and promotion policies across specialised agents.</td></tr><tr><td>Workflow designer</td><td>Define reusable agents, skills, gates, branches, budgets, and escalation behaviour.</td></tr><tr><td>Operator / approver</td><td>Inspect blocked runs, compare artifacts, approve exact versions, and resume safely.</td></tr><tr><td>Runtime integrator</td><td>Add a new agent executor without changing workflow semantics.</td></tr></table>
+<h3>5.2 Core use cases</h3><ul><li>Build a feature from uncertain idea through an approved release candidate.</li><li>Resume a multi-day run after agent, host, or orchestrator restart.</li><li>Review an immutable implementation checkpoint asynchronously.</li><li>Reject a defective plan and invalidate only affected descendants.</li><li>Escalate repeated no-progress attempts to a human with complete evidence.</li><li>Replay a run with fake agents to validate orchestration logic.</li></ul>
+</section>
+
+<section id="architecture"><h2>6. Conceptual architecture</h2>
+<pre><code>Operator UI / CLI / API
+          │
+          ▼
+Workflow Control Plane
+  ├─ definition compiler and state machine
+  ├─ scheduler, leases, retries, budgets
+  ├─ gate engine and correction router
+  ├─ approval queues and policy engine
+  └─ materialised run projections
+          │
+     ┌────┴───────────┐
+     ▼                ▼
+Artifact Plane      Execution Plane
+  ├─ manifests        ├─ runtime adapters
+  ├─ blobs            ├─ Git/worktree manager
+  ├─ hashes           ├─ deterministic sandbox runner
+  ├─ provenance       └─ context broker
+  └─ dependency DAG
+          │
+          ▼
+Append-only Event Store + relational projections</code></pre>
+<h3>6.1 Component responsibilities</h3><table><tr><th>Component</th><th>Responsibility</th></tr>
+<tr><td>Workflow engine</td><td>Compile definitions, schedule stage attempts, enforce transitions and waiting states.</td></tr>
+<tr><td>Artifact registry</td><td>Store typed immutable manifests, content hashes, blobs, provenance, and dependency edges.</td></tr>
+<tr><td>Gate engine</td><td>Evaluate presence, schema, integrity, provenance, freshness, progress, deterministic evidence, semantic review, and human decisions.</td></tr>
+<tr><td>Correction router</td><td>Map structured failure classes to responsible upstream stages and trigger impact analysis.</td></tr>
+<tr><td>Runtime adapter layer</td><td>Create isolated sessions, invoke agents, expose tools, stream events, and collect usage.</td></tr>
+<tr><td>Context broker</td><td>Create minimal stage envelopes and support explicit artifact/source retrieval.</td></tr>
+<tr><td>Git manager</td><td>Create workspaces, immutable checkpoints, integration branches, merge records, and promotion records.</td></tr>
+<tr><td>Sandbox runner</td><td>Execute configured commands and record unaltered evidence.</td></tr>
+<tr><td>Event store</td><td>Record every domain transition append-only and support replay.</td></tr>
+</table>
+</section>
+
+<section id="domain"><h2>7. Core domain model</h2>
+<table><tr><th>Entity</th><th>Essential fields</th></tr>
+<tr><td>Project</td><td>ID, repository, protected target, policies, default commands, secret scope.</td></tr>
+<tr><td>WorkflowDefinition</td><td>ID, semantic version, stages, transitions, gate policies, budgets, agent selectors.</td></tr>
+<tr><td>Run</td><td>ID, project, definition version, status, root objective, base commit, timestamps.</td></tr>
+<tr><td>Stage</td><td>Stable key, purpose, input selectors, output schemas, gate, workspace and context policy.</td></tr>
+<tr><td>StageAttempt</td><td>Attempt number, assignment, lease, status, budgets used, timestamps, failure reason.</td></tr>
+<tr><td>Artifact</td><td>ID, kind, schema version, immutable version, hash, producer, inputs, payload handles.</td></tr>
+<tr><td>ArtifactEdge</td><td>Upstream/downstream IDs, relation type, requirement/slice scope.</td></tr>
+<tr><td>GateAttempt</td><td>Gate ID, candidate artifacts, evaluator versions, results, evidence and verdict.</td></tr>
+<tr><td>Checkpoint</td><td>Repository, base/head commit, patch hash, changed files, workspace provenance.</td></tr>
+<tr><td>AgentProfile</td><td>Role, runtime, model, skills, prompts, tools, permissions, context policy.</td></tr>
+<tr><td>CorrectiveAction</td><td>Stable finding ID, classification, severity, owner stage, required evidence, status.</td></tr>
+<tr><td>HumanDecision</td><td>Actor, exact artifact/hash, decision, rationale, exceptions, timestamp.</td></tr>
+<tr><td>Event</td><td>Sequence, aggregate, type, schema version, payload, correlation and causation IDs.</td></tr></table>
+<h3>7.1 Run states</h3><pre><code>CREATED → BASELINING → RUNNING ↔ WAITING_FOR_AGENT
+                           ↔ WAITING_FOR_HUMAN
+                           ↔ BLOCKED_OPERATIONAL
+                           ↔ CORRECTING
+                           → VERIFIED → AWAITING_PROMOTION
+                           → COMPLETED
+                           → CANCELLED / FAILED_BUDGET</code></pre>
+</section>
+
+<section id="workflow"><h2>8. Specification-to-release workflow: Gates 0–9</h2>
+<div class="gate"><h3>Gate 0 — Project intake and technical baseline</h3><p><strong>Purpose:</strong> establish the factual starting point so pre-existing conditions are not misclassified as regressions.</p><div class="gate-grid"><div><h4>Activities</h4><ul><li>Validate repository and target branch.</li><li>Capture base commit and dirty state.</li><li>Discover build, test, lint, type-check, package, migration, and security commands.</li><li>Run configured baseline checks.</li><li>Map major modules, languages, dependencies, and architectural seams.</li><li>Record environment and sandbox identity.</li></ul></div><div><h4>Artifacts</h4><ul><li><code>ProjectBaseline</code></li><li><code>RepositoryMap</code></li><li><code>BaselineVerificationRun</code></li><li><code>ToolchainManifest</code></li></ul></div></div><p><strong>Pass:</strong> repository identity, exact base commit, environment identity, commands, and known baseline failures are recorded. Infrastructure uncertainty blocks operationally rather than advancing.</p></div>
+
+<div class="gate"><h3>Gate 1 — Collaborative specification and adversarial clarification</h3><p><strong>Purpose:</strong> convert the user's idea into an explicit, testable specification accepted at an exact version.</p><div class="gate-grid"><div><h4>Activities</h4><ul><li>Conduct an intensive discovery interview that challenges assumptions and terminology.</li><li>Clarify actors, behaviours, boundaries, constraints, failure cases, security, privacy, operations, and non-functional needs.</li><li>Assign stable requirement and decision IDs.</li><li>Produce a versioned specification candidate.</li><li>Run an independent red-team review.</li><li>Route unresolved findings back into clarification.</li><li>Request explicit user approval of an exact content hash.</li></ul></div><div><h4>Artifacts</h4><ul><li><code>DiscoveryRecord</code></li><li><code>Specification</code></li><li><code>SpecificationReview</code></li><li><code>DecisionLog</code></li><li><code>HumanAcceptanceDecision</code></li></ul></div></div><p><strong>Pass:</strong> all blocking review findings are resolved or explicitly excepted; the user approves the exact specification version. Approval never transfers to modified content.</p></div>
+
+<div class="gate"><h3>Gate 2 — Vertical-slice design and test-contract creation</h3><p><strong>Purpose:</strong> decompose the accepted specification into independently valuable, testable increments and define observable contracts before implementation planning.</p><div class="gate-grid"><div><h4>Activities</h4><ul><li>Create stable slice IDs such as <code>SLICE-001</code>.</li><li>Prefer vertical behaviour through relevant layers over horizontal technical batches.</li><li>Define seams, dependencies, integration order, and ownership.</li><li>Trace every slice to requirement IDs.</li><li>Design acceptance and contract tests independent of an assumed implementation.</li><li>Independently review tests for coverage, false positives, over-specification, feasibility, and isolation.</li></ul></div><div><h4>Artifacts</h4><ul><li><code>SliceSet</code></li><li><code>TestContractSet</code></li><li><code>TestContractReview</code></li><li><code>TraceabilityMatrix</code></li><li><code>SliceDependencyGraph</code></li></ul></div></div><p><strong>Pass:</strong> every accepted requirement is covered or explicitly deferred, slice dependencies form a valid DAG, and test contracts pass independent review.</p></div>
+
+<div class="gate"><h3>Gate 3 — Checklist implementation planning</h3><p><strong>Purpose:</strong> create a detailed, executable plan for each slice without performing implementation.</p><div class="gate-grid"><div><h4>Activities</h4><ul><li>Assign stable plan-item IDs.</li><li>Identify affected components, prerequisites, dependency order, data changes, migrations, rollout and rollback concerns.</li><li>Define per-item validation and completion evidence.</li><li>Trace plan items to requirements, slice IDs, and test contracts.</li><li>Review feasibility, scope, ordering, and architectural fit.</li></ul></div><div><h4>Artifacts</h4><ul><li><code>SliceImplementationPlan</code></li><li><code>PlanReview</code></li><li><code>PlanTraceabilityMap</code></li></ul></div></div><p><strong>Pass:</strong> all required work is checklistable, ordered, traceable, and independently reviewed. Downstream plan defects route back here.</p></div>
+
+<div class="gate"><h3>Gate 4 — Bounded Ralph implementation loop with asynchronous A2A review</h3><p><strong>Purpose:</strong> implement one slice through bounded iterations while reviewers assess immutable checkpoints asynchronously.</p><div class="gate-grid"><div><h4>Iteration envelope</h4><ul><li>Slice definition and relevant plan items.</li><li>Relevant test contracts.</li><li>Current repository checkpoint.</li><li>Previous iteration summary.</li><li>Outstanding corrective actions.</li><li>Remaining budgets.</li></ul></div><div><h4>Artifacts</h4><ul><li><code>ImplementationCheckpoint</code></li><li><code>CheckpointReview</code></li><li><code>IterationSummary</code></li><li><code>CorrectiveActionSet</code></li></ul></div></div><p>Each iteration publishes a commit or content-addressed patch before review. Review covers standards, scope, architecture, security, maintainability, and test quality. Review is bound to the exact checkpoint hash and cannot observe a changing worktree.</p><p><strong>Pass:</strong> required plan items are implemented at an immutable checkpoint, deterministic progress is proven, blocking A2A findings are resolved, and budgets remain within policy.</p></div>
+
+<div class="gate"><h3>Gate 5 — Deterministic tests and failure classification</h3><p><strong>Purpose:</strong> establish execution facts in an isolated, reproducible environment and determine the responsible correction stage.</p><div class="gate-grid"><div><h4>Runner records</h4><ul><li>Exact command and working directory.</li><li>Exit code and signal.</li><li>Unaltered stdout/stderr handles.</li><li>Test counts and duration.</li><li>Environment and image identity.</li><li>Repository/checkpoint hash.</li></ul></div><div><h4>Artifacts</h4><ul><li><code>TestRun</code></li><li><code>FailureDiagnosis</code></li><li><code>CorrectiveActionSet</code></li><li><code>FlakinessAssessment</code></li></ul></div></div><p>An agent may diagnose evidence but cannot alter the runner's result. Classifications are implementation, plan, test contract, slice design, specification, dependency/seam, infrastructure, flaky/non-deterministic, or unknown.</p><p><strong>Pass:</strong> all required deterministic checks pass at the exact checkpoint. Infrastructure failures block operationally and do not count as code failures.</p></div>
+
+<div class="gate"><h3>Gate 6 — Independent intent-focused slice review</h3><p><strong>Purpose:</strong> verify that passing code matches the accepted intent rather than merely satisfying tests.</p><p>The reviewer receives the accepted specification, slice definition, test contracts, implementation plan, exact checkpoint, deterministic evidence, and outstanding findings. It checks scope, correctness, architecture, security, maintainability, compatibility, migration safety, and test adequacy.</p><p><strong>Artifacts:</strong> <code>SliceCodeReview</code> with a closed verdict: <code>ACCEPT</code>, <code>REQUEST_CHANGES</code>, <code>ESCALATE_HUMAN</code>, or <code>REJECT_UPSTREAM_DEFECT</code>.</p><p><strong>Pass:</strong> independent acceptance of the exact checkpoint with no unresolved blocking finding.</p></div>
+
+<div class="gate"><h3>Gate 7 — Ordered incremental slice integration</h3><p><strong>Purpose:</strong> integrate accepted slices one at a time in dependency order so conflicts and regressions remain attributable.</p><div class="gate-grid"><div><h4>Activities</h4><ul><li>Create a versioned integration plan.</li><li>Merge one accepted checkpoint into an integration branch.</li><li>Record lineage, conflicts, and resolutions.</li><li>Run impacted tests after every merge.</li><li>Return semantic changes to review rather than silently altering accepted output.</li></ul></div><div><h4>Artifacts</h4><ul><li><code>IntegrationPlan</code></li><li><code>IntegrationStep</code></li><li><code>ConflictResolution</code></li><li><code>IntegratedBuild</code></li></ul></div></div><p><strong>Pass:</strong> each slice is integrated in topological order with passing evidence and exact commit lineage.</p></div>
+
+<div class="gate"><h3>Gate 8 — Full-system verification and release review</h3><p><strong>Purpose:</strong> verify the integrated system and create an immutable release candidate.</p><ul><li>Run the complete test suite, build/package checks, static analysis, type checks, configured security checks, end-to-end tests, and migration/rollback checks.</li><li>Audit requirement, slice, test, plan, checkpoint, and evidence traceability.</li><li>Run an independent final semantic review after deterministic verification.</li><li>Record known risks, accepted exceptions, and unresolved non-blocking findings.</li></ul><p><strong>Artifacts:</strong> <code>SystemVerificationRun</code>, <code>TraceabilityAudit</code>, <code>ReleaseReview</code>, and <code>ReleaseCandidate</code>.</p><p><strong>Pass:</strong> configured verification succeeds, coverage is complete or explicitly excepted, and the final reviewer accepts the exact release commit.</p></div>
+
+<div class="gate"><h3>Gate 9 — Human acceptance and protected-branch promotion</h3><p><strong>Purpose:</strong> separate automated verification from the consequential human decision to promote.</p><p>The UI presents the exact release candidate, verification evidence, requirement coverage, changes, known risks, exceptions, and human-review flags. The approver may approve, reject, request changes, or accept with documented exceptions if policy allows.</p><p><strong>Artifacts:</strong> <code>HumanAcceptanceDecision</code> and <code>PromotionRecord</code>.</p><p><strong>Pass:</strong> an authorised human approves the exact verified commit and ArtifactFlow promotes that same commit to the protected target. Any content change after verification requires re-verification.</p></div>
+</section>
+
+<section id="artifacts"><h2>9. Artifact system</h2>
+<h3>9.1 Manifest contract</h3><pre><code>{
+  "schema_version": 1,
+  "artifact_id": "art_01...",
+  "run_id": "run_01...",
+  "stage_key": "slice-001-review",
+  "attempt": 2,
+  "kind": "slice_code_review",
+  "version": 2,
+  "producer": {"runtime":"hermes","profile":"reviewer","task_id":"task_01..."},
+  "inputs": [{"artifact_id":"art_...","sha256":"..."}],
+  "payloads": [{"uri":"blob://...","sha256":"...","size":18422}],
+  "evidence": [{"evidence_id":"ev_...","kind":"test_run"}],
+  "created_at": "RFC3339",
+  "content_sha256": "..."
+}</code></pre>
+<h3>9.2 Requirements</h3><ul>
+<li><span class="req">ART-001</span> Artifacts are immutable; correction creates a new version.</li><li><span class="req">ART-002</span> Every artifact has a versioned schema and content hash.</li><li><span class="req">ART-003</span> Payload hashes are recomputed on ingestion.</li><li><span class="req">ART-004</span> Producer, inputs, workspace, checkpoint, and evaluator provenance are recorded.</li><li><span class="req">ART-005</span> Large payloads live in blob storage; manifests remain cheap to inject.</li><li><span class="req">ART-006</span> Uniqueness is scoped by run, stage, attempt, kind, and semantic progress—not global hash uniqueness.</li><li><span class="req">ART-007</span> Artifacts support stable requirement, decision, slice, test, plan-item, and finding IDs.</li><li><span class="req">ART-008</span> Artifacts can be exported with schemas, evidence, dependency graph, and event history.</li></ul>
+</section>
+
+<section id="gates"><h2>10. Gate engine</h2>
+<h3>10.1 Evaluation order</h3><ol><li>Presence of required artifacts and fields.</li><li>Schema validation against pinned versions.</li><li>Integrity: recompute hashes and sizes.</li><li>Provenance: active assignment, workspace, producer, and input matching.</li><li>Freshness: candidate belongs to the current attempt and active upstream versions.</li><li>Progress: relevant state differs from the rejected attempt.</li><li>Deterministic verification: commands, policies, tests, and checks.</li><li>Semantic review by an independent profile or structured judge.</li><li>Human approval where required.</li></ol>
+<pre><code>{
+  "ok": false,
+  "gate": "progress",
+  "codes": ["PATCH_UNCHANGED"],
+  "compared_to": "art_previous",
+  "responsible_stage": "implementation",
+  "repair": "Publish a checkpoint with a changed normalized patch hash."
+}</code></pre>
+<h3>10.2 Gate policy requirements</h3><ul><li>Evaluators and schemas are version-pinned per run.</li><li>A semantic pass cannot override failed deterministic checks.</li><li>Gate application and downstream scheduling are transactional and idempotent.</li><li>Every failure returns machine-readable codes, evidence references, responsible scope, and permitted transitions.</li><li>Producer self-approval is prohibited unless an explicit low-risk policy exception exists; it is never allowed for release promotion.</li></ul>
+</section>
+
+<section id="routing"><h2>11. Failure routing, impact analysis, and invalidation</h2>
+<table><tr><th>Failure class</th><th>Default destination</th><th>Examples</th></tr><tr><td>Implementation</td><td>Gate 4 fix attempt</td><td>Incorrect logic, missing error handling, regression.</td></tr><tr><td>Plan</td><td>Gate 3</td><td>Missing task, unsafe ordering, infeasible approach.</td></tr><tr><td>Test contract</td><td>Gate 2 test-design stage</td><td>False positive, brittle assumption, untestable contract.</td></tr><tr><td>Slice design / seam</td><td>Gate 2 slicing stage</td><td>Invalid boundary, circular dependency, incompatible contract.</td></tr><tr><td>Specification</td><td>Gate 1 and possibly user</td><td>Ambiguity, contradiction, missing requirement.</td></tr><tr><td>Infrastructure</td><td>Operational blocked state</td><td>Unavailable service, corrupt environment, runner outage.</td></tr><tr><td>Flaky / non-deterministic</td><td>Quarantine/diagnosis policy</td><td>Intermittent test, timing or environment variance.</td></tr><tr><td>Unknown</td><td>Human triage after bounded diagnosis</td><td>Insufficient evidence or conflicting classifications.</td></tr></table>
+<h3>11.1 Invalidation</h3><p>When an accepted upstream artifact changes, the engine traverses dependency edges and marks affected descendants <code>STALE</code>. Stale status records the triggering artifact, prior accepted version, new version, rule used, and required re-evaluation. Unaffected branches may continue.</p><ul><li>Requirement change may invalidate slices, tests, plans, implementations, reviews, integrations, and releases.</li><li>Test change may invalidate plan coverage, implementation acceptance, and verification evidence.</li><li>Implementation checkpoint change always invalidates reviews and test evidence bound to the old hash.</li><li>Integration conflict resolution that changes semantics invalidates slice acceptance.</li><li>Release-candidate mutation invalidates human approval.</li></ul>
+</section>
+
+<section id="context"><h2>12. Context management and token yield</h2>
+<h3>12.1 Stage envelope</h3><pre><code>Objective and completion contract
+Attempt number and remaining budgets
+Input artifact IDs with one-line summaries
+Exact repository/checkpoint handle
+Constraints and non-goals
+Required output artifact schemas
+Outstanding finding IDs
+Available retrieval tools</code></pre>
+<h3>12.2 Context policy</h3><ul><li>Start fresh sessions at semantic boundaries.</li><li>Do not inject full upstream transcripts or historical tool output.</li><li>Provide artifact manifests and summaries first; retrieve payloads on demand.</li><li>Expose <code>artifact_get</code>, <code>artifact_search</code>, <code>stage_inputs</code>, source-search, and scoped file-read tools.</li><li>Track every retrieval and repeated retrieval of the same object.</li><li>Allow bounded continuity only within an implementation/fix loop where local working memory has demonstrated value.</li><li>Generate an iteration summary before context reset; it is an artifact and may not claim unverified facts.</li></ul>
+<h3>12.3 Token-yield metrics</h3><ul><li>Input/output tokens per accepted artifact and successful stage.</li><li>Accepted implementation change per coding turn.</li><li>Defects found per review token.</li><li>Repeated artifact/source retrieval.</li><li>No-progress attempts and compression events.</li><li>Cost of semantic judges versus prevented wasted work.</li><li>Cache hit/stability within a stage.</li></ul>
+</section>
+
+<section id="agents"><h2>13. Agent profiles, skills, behaviours, and runtime adapters</h2>
+<h3>13.1 Profile schema</h3><pre><code>id, version, role, description
+runtime_adapter and model selector
+system prompt / behavioural policy
+skills and project instructions
+tool allow/deny policy
+workspace access (read, write, test, merge, promote)
+context and retrieval policy
+output artifact contracts
+budgets and escalation rules
+independence constraints</code></pre>
+<p>Keep stable role, reusable skill, repository instructions, current task, and workflow transition logic separate. Prompts guide behaviour; the engine enforces deterministic state.</p>
+<h3>13.2 Runtime adapter interface</h3><ul><li><code>capabilities()</code></li><li><code>create_session(profile, envelope, workspace)</code></li><li><code>send(session, message)</code></li><li><code>stream_events(session)</code></li><li><code>request_artifact(session, contract)</code></li><li><code>usage(session)</code></li><li><code>cancel(session)</code></li><li><code>resume(session)</code> where supported</li><li><code>health()</code></li></ul>
+<p>The adapter normalises tool events, usage, completion, failure, and artifact submission but does not own stage transitions. Initial adapters should include a deterministic fake runtime and one real runtime. Hermes is a strong first real adapter; additional adapters can target Claude Code, Codex, OpenCode, or a generic OpenAI-compatible agent.</p>
+</section>
+
+<section id="git"><h2>14. Git, checkpoints, and workspace management</h2><ul>
+<li>Capture repository URL/identity and base commit at Gate 0.</li><li>Use isolated worktrees or equivalent workspaces per concurrent writable stage.</li><li>Every implementation iteration publishes an immutable commit or content-addressed patch.</li><li>Record base/head commit, normalized patch hash, changed files, authoring stage, and workspace.</li><li>Reviewers receive read-only access to the exact checkpoint.</li><li>Integration occurs on a dedicated branch one slice at a time.</li><li>Conflict resolution is a new artifact with provenance and may require renewed review.</li><li>Protected target promotion is limited to the exact Gate 8 release commit after Gate 9 approval.</li><li>Workspace cleanup never deletes the authoritative checkpoint or artifact record.</li></ul>
+</section>
+
+<section id="execution"><h2>15. Deterministic sandbox execution</h2><ul>
+<li>Commands run in an isolated environment selected by project policy.</li><li>Record image/environment digest, OS/runtime versions, variables allowlist, working directory, command, start/end time, exit code, signal, and logs.</li><li>Secrets are injected by reference and redacted from stored output.</li><li>Network policy is configurable per command/stage.</li><li>Timeout, CPU, memory, disk, process, and output-size limits are enforced by software.</li><li>Test reports may be parsed into structured counts, but original logs remain immutable.</li><li>Agents may explain results but cannot create a passing <code>TestRun</code> without runner evidence.</li><li>Equivalent reruns can be compared to identify flakiness and environmental drift.</li></ul>
+</section>
+
+<section id="budgets"><h2>16. Loops, budgets, and no-progress detection</h2>
+<table><tr><th>Budget</th><th>Examples</th></tr><tr><td>Attempts</td><td>Maximum implementation, review, diagnosis, and correction attempts.</td></tr><tr><td>Tokens/cost</td><td>Per stage, per slice, per run, and per runtime/model.</td></tr><tr><td>Wall time</td><td>Stage deadline, command timeout, run deadline.</td></tr><tr><td>No progress</td><td>Repeated unchanged patch, unchanged findings, duplicate artifact, repeated retrieval loop.</td></tr><tr><td>Operational retry</td><td>Transient runtime/sandbox failures separated from semantic attempts.</td></tr></table>
+<p>Budget exhaustion creates a durable <code>WAITING_FOR_HUMAN</code> or <code>FAILED_BUDGET</code> state with complete attempt history, unresolved findings, consumed budget, and available decisions. It never silently extends itself.</p>
+</section>
+
+<section id="persistence"><h2>17. Persistence, idempotency, and recovery</h2>
+<h3>17.1 Storage</h3><ul><li>Relational database for runs, stages, attempts, artifacts, gates, edges, leases, approvals, and projections.</li><li>Append-only event table for audit and replay.</li><li>Content-addressed local/object blob store for large payloads and logs.</li><li>Git repositories/worktrees for source state.</li></ul>
+<h3>17.2 Events</h3><p>At minimum: run created; stage scheduled, claimed, started, heartbeat, completed, blocked or failed; artifact submitted, rejected, accepted or invalidated; gate evaluated; correction routed; transition selected; human decision recorded; integration completed; release promoted; run completed or cancelled.</p>
+<h3>17.3 Reliability requirements</h3><ul><li>Transition application and child scheduling are transactional.</li><li>Task creation and artifact submission use idempotency keys.</li><li>Workers use leases and heartbeats; expired work is safely reclaimable.</li><li>Duplicate callbacks do not duplicate artifacts or downstream tasks.</li><li>After restart, materialised state can be rebuilt from events and durable domain records.</li><li>Unknown execution outcome is represented explicitly and reconciled before retry.</li></ul>
+</section>
+
+<section id="api"><h2>18. API requirements</h2>
+<table><tr><th>Area</th><th>Representative operations</th></tr><tr><td>Projects</td><td>Create/update project, baseline repository, configure commands and policies.</td></tr><tr><td>Definitions</td><td>Create, validate, version, diff, activate, and deprecate workflow definitions.</td></tr><tr><td>Runs</td><td>Start, inspect, pause, resume, cancel, replay, and export.</td></tr><tr><td>Stages</td><td>List attempts, retry, block/unblock, inspect envelope and budgets.</td></tr><tr><td>Artifacts</td><td>Submit, validate, retrieve manifest/payload, compare versions, traverse dependencies.</td></tr><tr><td>Gates</td><td>Evaluate, inspect checks/evidence, re-evaluate eligible candidates.</td></tr><tr><td>Approvals</td><td>List pending, approve/reject exact version, request changes, record exception.</td></tr><tr><td>Agents</td><td>Manage profiles, runtime bindings, skills, models, prompts, tools and policies.</td></tr><tr><td>Operations</td><td>Health, leases, queues, budgets, audit export and metrics.</td></tr></table>
+<p>All mutating calls accept an idempotency key. API responses include stable IDs, schema versions, correlation IDs, and current entity versions for optimistic concurrency.</p>
+</section>
+
+<section id="ui"><h2>19. MVP operator UI</h2><ul>
+<li><strong>Run list:</strong> status, active gate, age, budget, blocker, project and workflow version.</li><li><strong>Run graph:</strong> stages, attempts, accepted/rejected/stale artifacts, transitions, and correction routes.</li><li><strong>Artifact viewer:</strong> schema-aware rendering, hash, provenance, dependencies, version diff and payload download.</li><li><strong>Gate inspector:</strong> deterministic checks, semantic verdict, evidence, failure codes and permitted actions.</li><li><strong>Checkpoint viewer:</strong> commit metadata, changed files, patch and bound reviews/test runs.</li><li><strong>Approval queue:</strong> exact version/hash, evidence summary, risk, exceptions and decision form.</li><li><strong>Operations:</strong> worker health, leases, queues, retries, budgets, logs and runtime availability.</li><li><strong>Audit timeline:</strong> append-only event history with correlation and causation.</li></ul>
+<div class="callout warn"><strong>Constraint:</strong> the MVP UI observes and operates the same versioned definitions consumed by the engine. It must not become an alternative source of workflow truth.</div>
+</section>
+
+<section id="designer"><h2>20. Future Agent Deck-style designer</h2><p>After the engine has proven stable semantics, add a visual facility for configuring:</p><ul><li>Agent profiles and personalities.</li><li>Skills and project instruction layers.</li><li>Models, providers, fallbacks, reasoning and cost limits.</li><li>Prompts, output contracts, and structured schemas.</li><li>Tool allowlists, permissions, workspace and network policies.</li><li>Context envelopes, retrieval policies, and compression boundaries.</li><li>Workflow graphs, branches, joins, loops, compensation and human waits.</li><li>Gate definitions, deterministic checks, semantic judges and approval rules.</li><li>Budgets, no-progress thresholds, retries and escalation.</li><li>Runtime-adapter bindings and portability checks.</li></ul>
+<p>The designer saves a versioned declarative definition, validates it, shows a compiled execution plan, supports diff/migration, and runs simulation against fake agents before activation. Unsupported cycles, missing schemas, self-approval, unbounded loops, inaccessible artifacts, and invalid permissions are compile-time errors.</p>
+</section>
+
+<section id="security"><h2>21. Security and secrets</h2><ul>
+<li>Least-privilege tools and workspace permissions per profile and stage.</li><li>Separate read, write, test, merge, approve, and promote capabilities.</li><li>Secrets stored outside prompts/artifacts and injected by opaque reference.</li><li>Secret and credential-like values redacted from logs, events, reviews, and exports.</li><li>Untrusted repository content is treated as data, not control instructions.</li><li>Sandbox network and filesystem scope is explicit and auditable.</li><li>Human approvals bind to authenticated identity, exact hash, policy version, time, and rationale.</li><li>Protected target credentials are available only to the promotion service after approval.</li><li>Artifact schemas and uploads enforce size, path, MIME, archive, and traversal controls.</li><li>Audit records are append-only and tamper-evident.</li></ul>
+</section>
+
+<section id="observability"><h2>22. Observability and audit</h2><h3>22.1 Metrics</h3><ul><li>Stage duration, queue delay, retries, failure classes and gate pass rate.</li><li>Tokens, cost and accepted-artifact yield by stage/profile/model.</li><li>No-progress rate, repeated retrieval and context compression.</li><li>Defects discovered by checkpoint review, tests, slice review and release review.</li><li>Invalidation fan-out and rework caused by each upstream stage.</li><li>Worker/runtime health, lease expiry, sandbox failures and command duration.</li><li>Human wait time and decision outcomes.</li></ul>
+<h3>22.2 Audit export</h3><p>A run export contains definitions and versions, artifact manifests and payload references, dependency graph, gate evaluations, deterministic evidence, checkpoint lineage, human decisions, event stream, usage/cost, and redaction report. Export must be sufficient to explain why every transition occurred without requiring private chain-of-thought.</p>
+</section>
+
+<section id="nfr"><h2>23. Non-functional requirements</h2><table><tr><th>Area</th><th>Requirement</th></tr><tr><td>Durability</td><td>No accepted artifact, gate decision, or human approval is lost after an acknowledged write.</td></tr><tr><td>Recovery</td><td>A process restart resumes without replaying completed side effects.</td></tr><tr><td>Consistency</td><td>Gate acceptance and downstream scheduling are atomic.</td></tr><tr><td>Scalability</td><td>MVP supports multiple concurrent slices and workers on one host; architecture permits external queues/blob stores later.</td></tr><tr><td>Performance</td><td>Manifest and state queries remain responsive without loading large blobs or transcripts.</td></tr><tr><td>Portability</td><td>Core engine runs locally and in containers; runtimes are adapters.</td></tr><tr><td>Explainability</td><td>Every run state and transition has evidence and a human-readable reason.</td></tr><tr><td>Privacy</td><td>Prompts, artifacts, and logs observe project retention and redaction policies.</td></tr><tr><td>Accessibility</td><td>Operator UI supports keyboard navigation, semantic structure, adequate contrast, and non-colour status cues.</td></tr><tr><td>Versioning</td><td>Definitions, schemas, evaluators, policies, profiles, and prompts are pinned per run.</td></tr></table>
+</section>
+
+<section id="validation"><h2>24. Validation and test strategy</h2>
+<h3>24.1 Deterministic fake-agent simulation</h3><p>Build a scripted fake runtime before relying on live models. Scenarios must cover:</p><ul><li>Happy path from project creation to human promotion.</li><li>Candidate artifact rejection followed by corrected version.</li><li>Duplicate submission and duplicate callback.</li><li>Crash before and after artifact commit, gate commit, and downstream scheduling.</li><li>Expired lease and worker reclamation.</li><li>Unchanged patch/no-progress attempt.</li><li>Stale review arriving after a newer checkpoint.</li><li>Specification revision invalidating descendants.</li><li>Test, plan, slice, specification, infrastructure, flaky, and unknown failure routing.</li><li>Integration conflict and semantic conflict resolution.</li><li>Budget exhaustion and human escalation.</li><li>Human approval of the wrong hash rejected.</li><li>Promotion attempt of a commit other than the verified release rejected.</li></ul>
+<h3>24.2 Test layers</h3><ul><li>Schema and property tests for artifacts and definitions.</li><li>State-machine and event-replay tests.</li><li>Transactional/idempotency tests with fault injection.</li><li>Runtime-adapter contract tests.</li><li>Git/worktree and sandbox integration tests.</li><li>Security, permission and redaction tests.</li><li>End-to-end fake-agent workflows.</li><li>Controlled live-model evaluations measuring completion, correctness, token yield and recovery.</li></ul>
+<h3>24.3 Live-model evaluation</h3><p>Use a fixed suite of small repositories and tasks with known acceptance tests. Compare models and context policies on accepted artifacts, escaped defects, retries, wall time, cost, tokens, repeated retrieval, and human interventions. Model output is never the benchmark oracle; deterministic tests and reviewed expected artifacts are.</p>
+</section>
+
+<section id="delivery"><h2>25. Recommended delivery plan</h2>
+<h3>25.1 Workstreams</h3><ol><li>Domain model and versioned schemas.</li><li>Event store and materialised workflow state.</li><li>Durable orchestration backend.</li><li>Artifact registry, hashes, blobs and dependency invalidation.</li><li>Gate engine and transition policies.</li><li>Project intake and Git workspace manager.</li><li>Deterministic sandbox runner.</li><li>Runtime-adapter interface and fake runtime.</li><li>Context broker and artifact retrieval tools.</li><li>Gate 1 specification experience.</li><li>Gate 2 slicing and test-design workflow.</li><li>Gate 3 planning workflow.</li><li>Gates 4–6 per-slice implementation workflow.</li><li>Gate 7 incremental integration.</li><li>Gates 8–9 release and human acceptance.</li><li>API and minimal operator UI.</li><li>Observability, token metrics and audit export.</li><li>Security, secrets and permissions.</li><li>Fault-injection and recovery suite.</li><li>First live runtime adapter and live-model evaluation.</li><li>Visual agent/workflow designer after MVP.</li></ol>
+<h3>25.2 First vertical tracer</h3><pre><code>Create project
+→ conduct a short specification conversation
+→ produce a candidate Specification artifact
+→ evaluate deterministic and semantic specification gates
+→ request explicit user approval of the exact artifact hash
+→ display the accepted artifact and append-only event history</code></pre>
+<p>This tracer proves the complete path from interaction through durable artifact production, independent gate evaluation, human approval, event persistence, restart recovery, and UI visibility before later gates are added.</p>
+<h3>25.3 Suggested release phases</h3><table><tr><th>Phase</th><th>Outcome</th></tr><tr><td>Foundation</td><td>Definitions, state machine, events, artifacts, fake runtime, gate engine, replay.</td></tr><tr><td>Specification tracer</td><td>Gate 0/1, human approval, API and basic UI.</td></tr><tr><td>Single-slice build</td><td>Gates 2–6 with Git, sandbox tests, bounded loops and one real runtime.</td></tr><tr><td>Multi-slice release</td><td>Gates 7–9, invalidation, integration, release verification and promotion.</td></tr><tr><td>Hardening</td><td>Fault injection, security, metrics, audit, live-model evaluations.</td></tr><tr><td>Designer</td><td>Versioned visual profile/workflow authoring and simulation.</td></tr></table>
+</section>
+
+<section id="acceptance"><h2>26. MVP acceptance criteria</h2><ul>
+<li>A run can execute Gates 0–9 using the fake runtime and at least one real runtime adapter.</li><li>The process can be killed and restarted during every stage without losing accepted state or duplicating side effects.</li><li>Every downstream stage is demonstrably gated by typed, validated artifacts.</li><li>Rejected artifacts remain immutable and corrected versions retain lineage.</li><li>Review and test evidence bind to exact checkpoint hashes.</li><li>Deterministic failures route to implementation, planning, tests, slicing, specification, infrastructure, flakiness, or human triage as configured.</li><li>Upstream revision automatically marks affected descendants stale and prevents their use.</li><li>Implementation/review loops stop on approval, blocker, no progress, or budget exhaustion.</li><li>Accepted slices integrate incrementally with tests after each merge.</li><li>Human approval is required for the exact release candidate before protected-target promotion.</li><li>The UI exposes run state, graph, artifacts, gates, evidence, checkpoints, budgets, events, blockers, and approvals.</li><li>An audit export explains every transition without relying on full conversation transcripts.</li><li>Token and cost metrics are available per stage and accepted artifact.</li><li>No secret value is persisted in an artifact, prompt log, event payload, or audit export.</li></ul>
+</section>
+
+<section id="questions"><h2>27. Product decisions and open questions</h2>
+<h3>27.1 Decisions already made</h3><ul><li>Standalone workflow control plane with pluggable runtime adapters.</li><li>Workflow engine before visual designer.</li><li>Artifacts and events are authoritative; transcripts are secondary.</li><li>Immutable artifact versions and independent acceptance.</li><li>Deterministic validation precedes semantic review.</li><li>Fresh sessions at semantic boundaries.</li><li>A2A review targets immutable checkpoints.</li><li>Failure routing is cause-specific.</li><li>Descendant invalidation is automatic.</li><li>Integration is incremental and topological.</li><li>Protected-branch promotion requires human acceptance.</li></ul>
+<h3>27.2 Open questions for implementation planning</h3><ul><li>Preferred implementation language and database for the control plane.</li><li>Whether local blob storage plus SQLite is sufficient for MVP or PostgreSQL/object storage should be used immediately.</li><li>Initial UI stack and whether CLI/TUI operation precedes web UI.</li><li>First real runtime adapter after the fake runtime.</li><li>Sandbox technology and cross-platform support expectations.</li><li>Authentication model for local-first and small-team deployments.</li><li>Policy language: typed YAML/JSON, embedded expression language, or constrained code plug-ins.</li><li>Retention, archival, and deletion policy for transcripts, logs, worktrees, and blobs.</li><li>Whether semantic evaluators require consensus, model diversity, or configurable quorum for high-risk gates.</li><li>Exact rules for accepted exceptions and who may authorise them.</li></ul>
+<div class="callout good"><strong>Planning readiness:</strong> this PRD defines the lifecycle, invariants, domain model, gate semantics, correction routing, durability requirements, interfaces, security boundaries, validation strategy, and acceptance criteria required to derive a complete end-to-end implementation plan.</div>
+</section>
+
+<footer><hr><p class="small">ArtifactFlow Product Requirements Document · Version 0.1 · Standalone HTML with no external dependencies. Use the Print / Save PDF button for a paginated export.</p></footer>
+</article></main>
+</div>
+<div class="toolbar"><button onclick="window.print()">Print / Save PDF</button></div>
+</body>
+</html>
